@@ -12,3 +12,228 @@
 .geo-matches{display:flex;flex-wrap:wrap;gap:6px;margin:6px 0}
 .geo-matches button{padding:6px 12px;border-radius:999px;border:1px solid #29414b;background:transparent;color:#cfe0e5;cursor:pointer;font-size:13px}
 .geo-matches button:hover{border-color:#2dd4bf;color:#2dd4bf}
+/* ENVIRONMENTAL RIGHTS */
+
+.rights-section {
+  scroll-margin-top: 95px;
+}
+
+.rights-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 25px;
+  padding: 30px;
+  margin-bottom: 16px;
+  border: 1px solid #285052;
+  border-radius: 15px;
+  background: linear-gradient(110deg, #12383a, #10262d);
+}
+
+.rights-hero h2 {
+  font: 600 32px 'Space Grotesk';
+  margin: 12px 0;
+}
+
+.rights-hero p {
+  max-width: 650px;
+  color: #a5bbc0;
+  font-size: 13px;
+  line-height: 1.8;
+}
+
+.rights-hero-icon,
+.right-icon {
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+  color: #2dd4bf;
+  background: #153c3d;
+  border: 1px solid #285052;
+  border-radius: 13px;
+}
+
+.rights-hero-icon {
+  width: 85px;
+  height: 85px;
+}
+
+.rights-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  margin-bottom: 45px;
+  border: 1px solid #29414b;
+  border-radius: 12px;
+  background: #10232c;
+  color: #2dd4bf;
+}
+
+.rights-note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.rights-note p {
+  margin: 0;
+  color: #a9bec3;
+  font-size: 11px;
+  line-height: 1.8;
+}
+
+.rights-note strong {
+  color: #e9f1f2;
+}
+
+.rights-heading {
+  margin-top: 42px;
+}
+
+.rights-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 13px;
+}
+
+.right-card,
+.agreement-card {
+  padding: 20px;
+  background: #10232c;
+  border: 1px solid #233d46;
+  border-radius: 14px;
+}
+
+.right-icon {
+  width: 43px;
+  height: 43px;
+  margin-bottom: 17px;
+}
+
+.right-card h3,
+.agreement-card h3 {
+  font: 600 16px 'Space Grotesk';
+  margin: 0 0 10px;
+  color: #e9f1f2;
+}
+
+.right-card p,
+.agreement-card p {
+  color: #91a7ad;
+  font-size: 11px;
+  line-height: 1.8;
+  margin: 0;
+}
+
+.agreement-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 13px;
+}
+
+.agreement-card {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.agreement-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+.agreement-top > span:first-child {
+  color: #2dd4bf;
+  font: 600 17px 'Space Grotesk';
+}
+
+.agreement-status {
+  padding: 6px 9px;
+  border: 1px solid #315057;
+  border-radius: 20px;
+  color: #9bb6ba;
+  font-size: 9px;
+}
+
+.agreement-type {
+  color: #829ba2;
+  font-size: 10px;
+  margin-bottom: 9px;
+}
+
+.agreement-card h3 {
+  font-size: 18px;
+}
+
+.agreement-card p {
+  flex: 1;
+  margin-bottom: 18px;
+}
+
+.agreement-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #2dd4bf;
+  text-decoration: none;
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.agreement-card a:hover {
+  color: #8af1e4;
+}
+
+.rights-action {
+  padding: 25px;
+  margin-top: 18px;
+  border: 1px solid #285052;
+  border-radius: 14px;
+  background: linear-gradient(120deg, #12383a, #10232c);
+}
+
+.rights-action h3 {
+  font: 600 20px 'Space Grotesk';
+  margin: 10px 0;
+}
+
+.rights-action p {
+  max-width: 850px;
+  color: #a5bbc0;
+  font-size: 12px;
+  line-height: 1.8;
+}
+
+@media (max-width: 850px) {
+  .rights-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .rights-hero {
+    padding: 22px;
+  }
+
+  .rights-hero h2 {
+    font-size: 25px;
+  }
+
+  .rights-hero-icon {
+    width: 55px;
+    height: 55px;
+  }
+
+  .rights-grid,
+  .agreement-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .agreement-top {
+    align-items: flex-start;
+  }
+}

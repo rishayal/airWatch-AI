@@ -32,7 +32,7 @@ import {
 } from 'lucide-react'
 
 import { getJSON, postJSON } from './api'
-
+import EnvironmentalRights from './EnvironmentalRights'
 
 // Default location
 const CENTER = {
@@ -534,6 +534,7 @@ function useMyLocation() {
           <a href="#trends">Analytics</a>
           <a href="#reports">Reports</a>
           <a href="#track">Track complaint</a>
+          <a href="#rights">Environmental Rights</a>
         </nav>
 
         <button
@@ -1454,6 +1455,8 @@ function useMyLocation() {
           </div>
 
         </section>
+       {/* ENVIRONMENTAL RIGHTS */}
+          <EnvironmentalRights />
 
 
         {/* CTA */}
