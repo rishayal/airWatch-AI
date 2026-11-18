@@ -33,7 +33,7 @@ import {
 
 import { getJSON, postJSON } from './api'
 import EnvironmentalRights from './EnvironmentalRights'
-
+import HealthAdvice from './HealthAdvice'
 // Default location
 const CENTER = {
   latitude: 31.5204,
@@ -307,63 +307,110 @@ export default function App() {
 
 
   // Use browser location
-  
-function useMyLocation() {
-  setLocationMessage('Getting your location...')
+    // Fallback: approximate location from IP address (city-level only)
+  async function locateByIp() {
+    setLocationMessage('Device location unavailable. Trying approximate location…')
 
-  navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      const latitude = pos.coords.latitude
-      const longitude = pos.coords.longitude
+    try {
+      const res = await fetch('https://ipwho.is/')
+      const data = await res.json()
 
-      const a = {
-        name: 'Your current area',
-        latitude,
-        longitude
-      }
+      if (!data.success) throw new Error('IP lookup failed')
 
-      setArea(a)
+      const latitude = Number(Number(data.latitude).toFixed(4))
+      const longitude = Number(Number(data.longitude).toFixed(4))
+      const name = [data.city, data.country].filter(Boolean).join(', ') || 'Your approximate area'
 
-      setSelected({
-        id: 'your-location',
-        name: 'Your current area',
-        latitude,
-        longitude
-      })
-
-      setPlaces([])
-      setReports([])
-      setCommunity(null)
-      setHotspots(null)
-
-      clearTracking()
-
-      setForm(f => ({
-        ...f,
-        latitude,
-        longitude,
-        location_name: 'Your current area'
-      }))
-
-      refreshHotspots(a)
-      refreshReports(a)
-
-      setLocationMessage('Location detected successfully!')
-    },
-    (err) => {
-      console.error('GEOLOCATION:', err)
+      chooseArea({ name, latitude, longitude })
 
       setLocationMessage(
-        `Location failed (${err.code}): ${err.message}`
+        `Using approximate location: ${name}. Allow device location for a more exact reading.`
       )
-    },
-   {
-  enableHighAccuracy: false,
-  timeout: 60000,
-  maximumAge: 60000
-}
-  )
-}
+    } catch {
+      setLocationMessage(
+        'Could not find your location. Please search for your city below.'
+      )
+    }
+  }
+  // Use browser location
+  function locateMe() {
+    if (!('geolocation' in navigator)) {
+      setLocationMessage(
+        'Your browser does not support location. Please search for your city instead.'
+      )
+      return
+    }
+
+    if (!window.isSecureContext) {
+      setLocationMessage(
+        'Location needs a secure connection (HTTPS or localhost). Please search for your city instead.'
+      )
+      return
+    }
+
+    setLocationMessage('Getting your location...')
+
+    navigator.geolocation.getCurrentPosition(
+      (pos) => {
+        const latitude = Number(pos.coords.latitude.toFixed(4))
+        const longitude = Number(pos.coords.longitude.toFixed(4))
+
+        const a = {
+          name: 'Your current area',
+          latitude,
+          longitude
+        }
+
+        setArea(a)
+
+        setSelected({
+          id: 'your-location',
+          name: 'Your current area',
+          latitude,
+          longitude
+        })
+
+        setPlaces([])
+        setReports([])
+        setCommunity(null)
+        setHotspots(null)
+        setError('')
+
+        clearTracking()
+
+        setForm(f => ({
+          ...f,
+          latitude,
+          longitude,
+          location_name: 'Your current area'
+        }))
+
+        refreshHotspots(a)
+        refreshReports(a)
+
+        setLocationMessage('Location detected successfully!')
+      },
+            (err) => {
+        console.error('GEOLOCATION:', err)
+
+        // Permission denied: don't go around the user's choice
+        if (err.code === 1) {
+          setLocationMessage(
+            'Location permission was blocked. Click the lock icon next to the address bar, allow Location, then try again. Or search for your city below.'
+          )
+          return
+        }
+
+        // Unavailable or timed out: fall back to approximate location
+        locateByIp()
+      },
+      {
+        enableHighAccuracy: false,
+        timeout: 15000,
+        maximumAge: 60000
+      }
+    )
+  }
   // Refresh air quality and statistical insights
   async function refreshAir(place = selected) {
 
@@ -639,7 +686,7 @@ function useMyLocation() {
             detail="µg/m³ · coarse particles"
           />
 
-          <Metric
+          <Metric 
             icon={Users}
             title="COMMUNITY REPORTS"
             value={reports.length}
@@ -647,7 +694,7 @@ function useMyLocation() {
           />
 
         </section>
-
+        <HealthAdvice aqi={aqi} />
 
         {/* MAP SECTION */}
         <section className="section" id="map">
@@ -730,7 +777,7 @@ function useMyLocation() {
 
               <button
                 className="secondary"
-                onClick={useMyLocation}
+                onClick={locateMe}
               >
                 <MapPin size={15} /> Use my location
               </button>

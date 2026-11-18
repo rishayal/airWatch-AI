@@ -13,6 +13,7 @@ from .config import settings
 from . import models, schemas
 from .services.air_quality import fetch_air_quality
 from .services.insights import build_insights
+from .services.health_advice import build_advice
 
 
 Base.metadata.create_all(bind=engine)
@@ -544,3 +545,14 @@ async def insights(
     return build_insights(
         data.get("hourly", {})
     )
+
+    # Profile-based health advice
+@app.get("/api/health-advice")
+def health_advice(
+    aqi: float = Query(..., ge=0, le=1000),
+    profile: str = Query(
+        "general",
+        pattern="^(general|asthma|child|elderly|runner)$"
+    )
+):
+    return build_advice(aqi, profile)
